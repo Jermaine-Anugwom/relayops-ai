@@ -15,7 +15,7 @@ Operations teams receive incomplete, duplicated, urgent, and sometimes hostile s
 
 ## The proof
 
-A deterministic triage engine, explicit abstention, injection resistance, human approval, and a tamper-evident audit chain.
+A deterministic category, urgency, and route classifier that sends suspicious instructions, missing locations, and low-confidence requests to review. Each input receives a stable evidence fingerprint.
 
 ## Why this is forward deployed
 
@@ -34,7 +34,7 @@ flowchart LR
   D --> E{Evidence complete?}
   E -->|yes| F[Human-checkable route]
   E -->|no| G[Abstain + review]
-  F --> H[Hash-chained audit]
+  F --> H[Stable input fingerprint]
   G --> H
 ```
 
@@ -43,14 +43,14 @@ flowchart LR
 ```bash
 python3.12 -m venv .venv
 source .venv/bin/activate
-python -m pip install -e '.[dev]'
+python -m pip install -c constraints.txt -e '.[dev]'
 pytest -q
 relayops
 ```
 
 No API key or network connection is required.
 
-Run the complete local stack with `docker compose up --build`; the interface is available on port 3000 and the API on port 8000.
+Run the interface and API demonstrations side by side with `docker compose up --build`; the interface is available on port 3000 and the API on port 8000. The visual fixture is intentionally static and does not claim to be API-produced evidence.
 
 ## Evaluation and limitations
 

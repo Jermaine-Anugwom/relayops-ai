@@ -21,7 +21,7 @@ Operations teams receive incomplete, duplicated, urgent, and sometimes hostile s
 
 ## Success measure
 
-A deterministic triage engine, explicit abstention, injection resistance, human approval, and a tamper-evident audit chain.
+Deterministic category, urgency, and routing decisions; review states for hostile or incomplete input; and stable input fingerprints.
 
 ## Handoff
 

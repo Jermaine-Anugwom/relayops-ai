@@ -2,11 +2,17 @@ from __future__ import annotations
 
 import json
 import re
+import unicodedata
 from dataclasses import asdict, dataclass
 from hashlib import sha256
 
 URGENT = ("gas leak", "downed line", "flooding", "fire", "sinkhole")
-INJECTION = (r"ignore .*instructions", r"reveal .*secret", r"system message", r"execute .*command")
+INJECTION = (
+    r"(?:ignore|disregard|bypass|override).{0,30}(?:instructions|directions|rules)",
+    r"(?:reveal|print|send|dump|expose|exfiltrate).{0,40}(?:secret|api key|password|credential|token)",
+    r"system message",
+    r"(?:run|execute|call).{0,20}(?:shell|tool|command)",
+)
 
 
 @dataclass(frozen=True)
@@ -30,7 +36,9 @@ class Decision:
 
 
 def triage(r: Request) -> Decision:
-    text = r.description.lower()
+    text = unicodedata.normalize("NFKC", r.description).lower()
+    text = re.sub(r"[\u200b-\u200f\u2060\ufeff]", "", text)
+    text = re.sub(r"\s+", " ", text)
     reasons = []
     if any(re.search(p, text, re.IGNORECASE) for p in INJECTION):
         reasons.append("untrusted instruction pattern")
